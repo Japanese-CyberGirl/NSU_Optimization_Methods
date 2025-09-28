@@ -26,10 +26,28 @@ moves = [
 for i in range(n):
     for j in range(n):
         for mi , mj in  moves:
-            i1, j1 = i + di, j + dj
+            i1, j1 = i + mi, j + mj
             try:
                 temp = A[i1][j1]
-                solver.Add(A[i2][j2] <= 1 - A[i][j])
+                solver.Add(A[i1][j1] <= 1 - A[i][j])
             
             except IndexError:
                 continue
+
+
+result = solver.Sum(A[i][j] for i in range(n) for j in range(n))
+
+solver.Maximize(result)
+
+status = solver.Solve()
+
+if status == pywraplp.Solver.OPTIMAL:
+    print(f"Максимальное количество коней: {solver.Objective().Value()}")
+    print("\nМатрица А:")
+
+    for i in range(n):
+        for j in range(n):
+            print(int(A[i][j].solution_value()), end = " ")
+        print()
+else:
+    print("Решение не найдено.")
