@@ -25,14 +25,11 @@ moves = [
 
 for i in range(n):
     for j in range(n):
-        for mi , mj in  moves:
+        for mi, mj in moves:
             i1, j1 = i + mi, j + mj
-            try:
-                temp = A[i1][j1]
-                solver.Add(A[i1][j1] <= 1 - A[i][j])
-            
-            except IndexError:
-                continue
+            if 0 <= i1 < n and 0 <= j1 < n:
+               
+                solver.Add(A[i][j] + A[i1][j1] <= 1)
 
 
 result = solver.Sum(A[i][j] for i in range(n) for j in range(n))
